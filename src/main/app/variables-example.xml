@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:spring="http://www.springframework.org/schema/beans" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-current.xsd
+http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
+	<http:listener-config name="HTTP_Listener_Configuration" host="0.0.0.0" port="8081" doc:name="HTTP Listener Configuration"/>
+	<flow name="variables-exampleFlow">
+		<http:listener config-ref="HTTP_Listener_Configuration" path="/variables" doc:name="HTTP"/>
+		<message-properties-transformer scope="invocation" doc:name="Initiliase variables">
+			<add-message-property key="name" value="#[dw('payload.name')]"/>
+			<add-message-property key="age" value="#[dw('payload.age')]"/>
+			<add-message-property key="location" value="#[dw('payload.location')]"/>
+			<add-message-property key="country" value="#[dw('payload.country')]"/>
+		</message-properties-transformer>
+<!-- 		<set-variable variableName="originalPayload" value="#[dw('payload')]" doc:name="save Payload" doc:description="saving original payload in originalPayload"/> -->
+<!-- 		<logger message="Flow Variables are #[flowVars.originalPayload] " level="INFO" doc:name="Logger"/> -->
+<!-- 		<logger message="name is #[flowVars.originalPayload.name]" level="INFO" doc:name="Logger"/> -->
+<!-- 		<message-properties-transformer scope="invocation" doc:name="Initilase flowVars"> -->
+<!-- 			<add-message-property key="name" value="#[flowVars.originalPayload.name]"/> -->
+<!-- 			<add-message-property key="age" value="#[flowVars.originalPayload.age]"/> -->
+<!-- 			<add-message-property key="location" value="#[flowVars.originalPayload.location]"/> -->
+<!-- 			<add-message-property key="country" value="#[flowVars.originalPayload.country]"/> -->
+<!-- 		</message-properties-transformer> -->
+		<logger message="Flow Vars are #[flowVars.name], #[flowVars.age], #[flowVars.location], #[flowVars.country]" level="INFO" doc:name="Logger"/>
+	</flow>
+</mule>
